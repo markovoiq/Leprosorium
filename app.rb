@@ -16,11 +16,20 @@ end
 
 configure do
 	get_db
+
 	@db.execute 'CREATE TABLE IF NOT EXISTS Posts 
 	(
 		id	INTEGER PRIMARY KEY AUTOINCREMENT,
 		created_date TEXT,
 		content	TEXT
+	)'
+
+	@db.execute 'CREATE TABLE IF NOT EXISTS Comments 
+	(
+		id	INTEGER PRIMARY KEY AUTOINCREMENT,
+		created_date TEXT,
+		content	TEXT,
+		post_id INTEGER
 	)'
 end
 
@@ -35,8 +44,8 @@ get '/new' do
 end
 
 post '/new' do
-	@content = params[:content]
-	if @content.length <= 0
+	content = params[:content]
+	if content.length <= 0
 		@error = "Type text"
 		return erb :new
 	end
@@ -47,15 +56,17 @@ post '/new' do
 end
 
 get '/details/:post_id' do
-	@post_id = params[:post_id]
+	post_id = params[:post_id]
 
-	results = @db.execute 'select * from Posts where id = ?', [@post_id]
+	results = @db.execute 'select * from Posts where id = ?', [post_id]
+
 	@row = results[0]
 
 	erb :details
 end
 
-post 'details/:post_id' do
-	comment = params[:comment]
-	erb comment
+post '/details/:post_id' do
+	post_id = params[:post_id]
+
+	content = params[:content]
 end
