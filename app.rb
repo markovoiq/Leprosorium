@@ -54,3 +54,8 @@ get '/details/:post_id' do
 
 	erb :details
 end
+
+post 'details/:post_id' do
+	comment = params[:comment]
+	erb comment
+end
