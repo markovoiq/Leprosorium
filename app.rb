@@ -14,6 +14,16 @@ before do
 	get_db
 end
 
+configure do
+	get_db
+	@db.execute 'CREATE TABLE IF NOT EXISTS Posts 
+	(
+		id	INTEGER PRIMARY KEY AUTOINCREMENT,
+		created date	TEXT,
+		content	TEXT
+	)'
+end
+
 get '/' do
 	erb "Hello! <a href=\"https://github.com/bootstrap-ruby/sinatra-bootstrap\">Original</a> pattern has been modified for <a href=\"http://rubyschool.us/\">Ruby School</a>"			
 end
@@ -23,6 +33,6 @@ get '/new' do
 end
 
 post '/new' do
-	@content = params[:message]
+	@content = params[:content]
 	erb @content
 end
